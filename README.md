@@ -3,7 +3,6 @@
 [![pub package](https://img.shields.io/pub/v/flutter_easyloading?style=flat)](https://pub.dev/packages/flutter_easyloading)
 [![CI](https://github.com/nslogx/flutter_easyloading/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/nslogx/flutter_easyloading/actions/workflows/ci.yml)
 [![pub points](https://img.shields.io/pub/points/flutter_easyloading?style=flat)](https://pub.dev/packages/flutter_easyloading/score)
-[![popularity](https://img.shields.io/pub/popularity/flutter_easyloading?style=flat)](https://pub.dev/packages/flutter_easyloading/score)
 [![likes](https://img.shields.io/pub/likes/flutter_easyloading?style=flat)](https://pub.dev/packages/flutter_easyloading/score)
 [![license](https://img.shields.io/github/license/nslogx/flutter_easyloading?style=flat)](./LICENSE)
 
