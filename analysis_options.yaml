@@ -1,0 +1,11 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - docs/**
+
+linter:
+  rules:
+    avoid_print: true
+    directives_ordering: true
+    unawaited_futures: true

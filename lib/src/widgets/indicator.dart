@@ -1,217 +1,110 @@
-// The MIT License (MIT)
-//
-// Copyright (c) 2020 nslogx
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../easy_loading.dart';
-import '../theme.dart';
+import '../types.dart';
 
-class LoadingIndicator extends StatefulWidget {
+/// A built-in animated indicator backed by `flutter_spinkit`.
+class LoadingIndicator extends StatelessWidget {
   const LoadingIndicator({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    required this.type,
+    required this.color,
+    required this.size,
+    required this.lineWidth,
+  });
 
-  @override
-  _LoadingIndicatorState createState() => _LoadingIndicatorState();
-}
-
-class _LoadingIndicatorState extends State<LoadingIndicator> {
-  final double _size = EasyLoadingTheme.indicatorSize;
-
-  /// indicator color of loading
-  final Color _indicatorColor = EasyLoadingTheme.indicatorColor;
-  late Widget _indicator;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  final EasyLoadingIndicatorType type;
+  final Color color;
+  final double size;
+  final double lineWidth;
 
   @override
   Widget build(BuildContext context) {
-    double _width = _size;
-    switch (EasyLoadingTheme.indicatorType) {
+    var width = size;
+    final Widget indicator;
+    switch (type) {
       case EasyLoadingIndicatorType.fadingCircle:
-        _indicator = SpinKitFadingCircle(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitFadingCircle(color: color, size: size);
       case EasyLoadingIndicatorType.circle:
-        _indicator = SpinKitCircle(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitCircle(color: color, size: size);
       case EasyLoadingIndicatorType.threeBounce:
-        _indicator = SpinKitThreeBounce(
-          color: _indicatorColor,
-          size: _size,
-        );
-        _width = _size * 2;
-        break;
+        indicator = SpinKitThreeBounce(color: color, size: size);
+        width = size * 2;
       case EasyLoadingIndicatorType.chasingDots:
-        _indicator = SpinKitChasingDots(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitChasingDots(color: color, size: size);
       case EasyLoadingIndicatorType.wave:
-        _indicator = SpinKitWave(
-          color: _indicatorColor,
-          size: _size,
-          itemCount: 6,
-        );
-        _width = _size * 1.25;
-        break;
+        indicator = SpinKitWave(color: color, size: size, itemCount: 6);
+        width = size * 1.25;
       case EasyLoadingIndicatorType.wanderingCubes:
-        _indicator = SpinKitWanderingCubes(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
-      case EasyLoadingIndicatorType.rotatingCircle:
-        _indicator = SpinKitRotatingCircle(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitWanderingCubes(color: color, size: size);
       case EasyLoadingIndicatorType.rotatingPlain:
-        _indicator = SpinKitRotatingPlain(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitRotatingPlain(color: color, size: size);
       case EasyLoadingIndicatorType.doubleBounce:
-        _indicator = SpinKitDoubleBounce(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitDoubleBounce(color: color, size: size);
       case EasyLoadingIndicatorType.fadingFour:
-        _indicator = SpinKitFadingFour(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitFadingFour(color: color, size: size);
       case EasyLoadingIndicatorType.fadingCube:
-        _indicator = SpinKitFadingCube(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitFadingCube(color: color, size: size);
       case EasyLoadingIndicatorType.pulse:
-        _indicator = SpinKitPulse(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitPulse(color: color, size: size);
       case EasyLoadingIndicatorType.cubeGrid:
-        _indicator = SpinKitCubeGrid(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitCubeGrid(color: color, size: size);
+      case EasyLoadingIndicatorType.rotatingCircle:
+        indicator = SpinKitRotatingCircle(color: color, size: size);
       case EasyLoadingIndicatorType.foldingCube:
-        _indicator = SpinKitFoldingCube(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitFoldingCube(color: color, size: size);
       case EasyLoadingIndicatorType.pumpingHeart:
-        _indicator = SpinKitPumpingHeart(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitPumpingHeart(color: color, size: size);
       case EasyLoadingIndicatorType.dualRing:
-        _indicator = SpinKitDualRing(
-          color: _indicatorColor,
-          size: _size,
-          lineWidth: EasyLoadingTheme.lineWidth,
+        indicator = SpinKitDualRing(
+          color: color,
+          size: size,
+          lineWidth: lineWidth,
         );
-        break;
       case EasyLoadingIndicatorType.hourGlass:
-        _indicator = SpinKitHourGlass(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitHourGlass(color: color, size: size);
       case EasyLoadingIndicatorType.pouringHourGlass:
-        _indicator = SpinKitPouringHourGlass(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitPouringHourGlass(color: color, size: size);
       case EasyLoadingIndicatorType.fadingGrid:
-        _indicator = SpinKitFadingGrid(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitFadingGrid(color: color, size: size);
       case EasyLoadingIndicatorType.ring:
-        _indicator = SpinKitRing(
-          color: _indicatorColor,
-          size: _size,
-          lineWidth: EasyLoadingTheme.lineWidth,
-        );
-        break;
+        indicator = SpinKitRing(color: color, size: size, lineWidth: lineWidth);
       case EasyLoadingIndicatorType.ripple:
-        _indicator = SpinKitRipple(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitRipple(color: color, size: size);
       case EasyLoadingIndicatorType.spinningCircle:
-        _indicator = SpinKitSpinningCircle(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
+        indicator = SpinKitSpinningCircle(color: color, size: size);
       case EasyLoadingIndicatorType.squareCircle:
-        _indicator = SpinKitSquareCircle(
-          color: _indicatorColor,
-          size: _size,
+        indicator = SpinKitSquareCircle(color: color, size: size);
+      case EasyLoadingIndicatorType.dancingSquare:
+        indicator = SpinKitDancingSquare(color: color, size: size);
+      case EasyLoadingIndicatorType.pianoWave:
+        indicator = SpinKitPianoWave(color: color, size: size);
+        width = size * 1.25;
+      case EasyLoadingIndicatorType.pouringHourGlassRefined:
+        indicator = SpinKitPouringHourGlassRefined(
+          color: color,
+          size: size,
+          strokeWidth: lineWidth,
         );
-        break;
-      default:
-        _indicator = SpinKitFadingCircle(
-          color: _indicatorColor,
-          size: _size,
+      case EasyLoadingIndicatorType.pulsingGrid:
+        indicator = SpinKitPulsingGrid(color: color, size: size);
+      case EasyLoadingIndicatorType.spinningLines:
+        indicator = SpinKitSpinningLines(
+          color: color,
+          size: size,
+          lineWidth: lineWidth,
         );
-        break;
+      case EasyLoadingIndicatorType.threeInOut:
+        indicator = SpinKitThreeInOut(color: color, size: size);
+        width = size * 2;
+      case EasyLoadingIndicatorType.waveSpinner:
+        indicator = SpinKitWaveSpinner(color: color, size: size);
     }
 
-    return Container(
-      constraints: BoxConstraints(
-        maxWidth: _width,
-      ),
-      child: _indicator,
+    return SizedBox(
+      width: width,
+      height: size,
+      child: Center(child: indicator),
     );
   }
 }

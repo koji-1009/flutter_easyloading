@@ -1,16 +1,24 @@
-# example
+# Flutter EasyLoading example
 
-A new Flutter project.
+This application is an interactive catalog for Flutter EasyLoading 4.0.0. It exercises loading, coalesced progress, results, toast, request deadlines, custom content, dismissal reasons, callbacks, and the supported style, mask, placement, animation, and interaction options. Its indicator selector includes all 30 animations exported by `flutter_spinkit` 5.2.2.
 
-## Getting Started
+## Run
 
-This project is a starting point for a Flutter application.
+From the repository root:
 
-A few resources to get you started if this is your first Flutter project:
+```sh
+cd example
+fvm flutter pub get
+fvm flutter run
+```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+The repository pins the supported Flutter SDK through FVM. To target the web example explicitly, use `fvm flutter run -d chrome`.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+In VS Code, select **Flutter EasyLoading Example** from **Run and Debug** to launch `example/lib/main.dart` with the example directory as its working directory.
+
+## Validate
+
+```sh
+fvm flutter analyze
+fvm flutter test
+```

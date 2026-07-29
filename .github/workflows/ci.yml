@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Format, analyze, and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Flutter from .fvmrc
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          channel: stable
+          flutter-version-file: .fvmrc
+          cache: true
+          pub-cache: true
+
+      - name: Print toolchain versions
+        run: flutter --version
+
+      - name: Install package dependencies
+        run: flutter pub get
+
+      - name: Install example dependencies
+        working-directory: example
+        run: flutter pub get
+
+      - name: Verify formatting
+        run: >-
+          dart format --output=none --set-exit-if-changed
+          lib test example/lib example/test
+
+      - name: Analyze package
+        run: flutter analyze --fatal-infos
+
+      - name: Run package tests
+        run: flutter test
+
+      - name: Run example tests
+        working-directory: example
+        run: flutter test
+
+      - name: Build web example
+        working-directory: example
+        run: >-
+          flutter build web --release
+          --base-href /flutter_easyloading/
+
+      - name: Validate publishable package
+        run: flutter pub publish --dry-run

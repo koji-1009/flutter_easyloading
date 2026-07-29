@@ -1,158 +1,374 @@
-// The MIT License (MIT)
-//
-// Copyright (c) 2020 nslogx
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-
 import 'package:flutter/material.dart';
 
-import './easy_loading.dart';
-import './animations/animation.dart';
-import './animations/opacity_animation.dart';
-import './animations/offset_animation.dart';
-import './animations/scale_animation.dart';
+import 'animations/animation.dart';
+import 'types.dart';
 
-class EasyLoadingTheme {
-  /// color of indicator
-  static Color get indicatorColor =>
-      EasyLoading.instance.loadingStyle == EasyLoadingStyle.custom
-          ? EasyLoading.instance.indicatorColor!
-          : EasyLoading.instance.loadingStyle == EasyLoadingStyle.dark
-              ? Colors.white
-              : Colors.black;
+@immutable
+class EasyLoadingConfigurationSnapshot {
+  const EasyLoadingConfigurationSnapshot({
+    required this.loadingStyle,
+    required this.indicatorType,
+    required this.animationStyle,
+    required this.textAlign,
+    required this.contentPadding,
+    required this.textPadding,
+    required this.indicatorSize,
+    required this.radius,
+    required this.fontSize,
+    required this.progressWidth,
+    required this.lineWidth,
+    required this.animationDuration,
+    required this.customAnimation,
+    required this.textStyle,
+    required this.textColor,
+    required this.indicatorColor,
+    required this.progressColor,
+    required this.backgroundColor,
+    required this.boxShadow,
+    required this.maskColor,
+  });
 
-  /// progress color of loading
-  static Color get progressColor =>
-      EasyLoading.instance.loadingStyle == EasyLoadingStyle.custom
-          ? EasyLoading.instance.progressColor!
-          : EasyLoading.instance.loadingStyle == EasyLoadingStyle.dark
-              ? Colors.white
-              : Colors.black;
+  final EasyLoadingStyle loadingStyle;
+  final EasyLoadingIndicatorType indicatorType;
+  final EasyLoadingAnimationStyle animationStyle;
+  final TextAlign textAlign;
+  final EdgeInsets contentPadding;
+  final EdgeInsets textPadding;
+  final double indicatorSize;
+  final double radius;
+  final double fontSize;
+  final double progressWidth;
+  final double lineWidth;
+  final Duration animationDuration;
+  final EasyLoadingAnimation? customAnimation;
+  final TextStyle? textStyle;
+  final Color? textColor;
+  final Color? indicatorColor;
+  final Color? progressColor;
+  final Color? backgroundColor;
+  final List<BoxShadow>? boxShadow;
+  final Color? maskColor;
+}
 
-  /// background color of loading
-  static Color get backgroundColor =>
-      EasyLoading.instance.loadingStyle == EasyLoadingStyle.custom
-          ? EasyLoading.instance.backgroundColor!
-          : EasyLoading.instance.loadingStyle == EasyLoadingStyle.dark
-              ? Colors.black.withOpacity(0.9)
-              : Colors.white;
+/// Immutable visual snapshot captured when a display call is accepted.
+@immutable
+class EasyLoadingThemeSnapshot {
+  const EasyLoadingThemeSnapshot._({
+    required this.loadingStyle,
+    required this.customIndicatorColor,
+    required this.customProgressColor,
+    required this.customBackgroundColor,
+    required this.customTextColor,
+    required this.maskColor,
+    required this.animation,
+    required this.animationDuration,
+    required this.contentPadding,
+    required this.textPadding,
+    required this.textAlign,
+    required this.textStyle,
+    required this.boxShadow,
+    required this.indicatorSize,
+    required this.progressWidth,
+    required this.lineWidth,
+    required this.radius,
+    required this.fontSize,
+    required this.indicatorType,
+  });
 
-  /// boxShadow color of loading
-  static List<BoxShadow>? get boxShadow =>
-      EasyLoading.instance.loadingStyle == EasyLoadingStyle.custom
-          ? EasyLoading.instance.boxShadow ?? [BoxShadow()]
-          : null;
+  final EasyLoadingStyle loadingStyle;
+  final Color? customIndicatorColor;
+  final Color? customProgressColor;
+  final Color? customBackgroundColor;
+  final Color? customTextColor;
+  final Color maskColor;
+  final EasyLoadingAnimation animation;
+  final Duration animationDuration;
+  final EdgeInsets contentPadding;
+  final EdgeInsets textPadding;
+  final TextAlign textAlign;
+  final TextStyle? textStyle;
+  final List<BoxShadow>? boxShadow;
+  final double indicatorSize;
+  final double progressWidth;
+  final double lineWidth;
+  final double radius;
+  final double fontSize;
+  final EasyLoadingIndicatorType indicatorType;
 
-  /// font color of status
-  static Color get textColor =>
-      EasyLoading.instance.loadingStyle == EasyLoadingStyle.custom
-          ? EasyLoading.instance.textColor!
-          : EasyLoading.instance.loadingStyle == EasyLoadingStyle.dark
-              ? Colors.white
-              : Colors.black;
+  static EasyLoadingThemeSnapshot capture(
+    EasyLoadingConfigurationSnapshot config, {
+    required EasyLoadingMaskType maskType,
+    EasyLoadingOptions? options,
+    bool progress = false,
+    bool panel = true,
+  }) {
+    final loadingStyle = options?.loadingStyle ?? config.loadingStyle;
+    final indicatorColor = options?.indicatorColor ?? config.indicatorColor;
+    final progressColor = options?.progressColor ?? config.progressColor;
+    final backgroundColor = options?.backgroundColor ?? config.backgroundColor;
+    final textColor = options?.textColor ?? config.textColor;
 
-  /// mask color of loading
-  static Color maskColor(EasyLoadingMaskType? maskType) {
-    maskType ??= EasyLoading.instance.maskType;
-    return maskType == EasyLoadingMaskType.custom
-        ? EasyLoading.instance.maskColor!
-        : maskType == EasyLoadingMaskType.black
-            ? Colors.black.withOpacity(0.5)
-            : Colors.transparent;
-  }
-
-  /// loading animation
-  static EasyLoadingAnimation get loadingAnimation {
-    EasyLoadingAnimation _animation;
-    switch (EasyLoading.instance.animationStyle) {
-      case EasyLoadingAnimationStyle.custom:
-        _animation = EasyLoading.instance.customAnimation!;
-        break;
-      case EasyLoadingAnimationStyle.offset:
-        _animation = OffsetAnimation();
-        break;
-      case EasyLoadingAnimationStyle.scale:
-        _animation = ScaleAnimation();
-        break;
-      default:
-        _animation = OpacityAnimation();
-        break;
+    if (loadingStyle == EasyLoadingStyle.custom && panel) {
+      _require(indicatorColor, 'indicatorColor');
+      _require(backgroundColor, 'backgroundColor');
+      _require(textColor, 'textColor');
+      if (progress) {
+        _require(progressColor, 'progressColor');
+      }
     }
-    return _animation;
+
+    final Color maskColor = switch (maskType) {
+      EasyLoadingMaskType.custom => _require(
+        options?.maskColor ?? config.maskColor,
+        'maskColor',
+      ),
+      EasyLoadingMaskType.black => Colors.black.withValues(alpha: 0.5),
+      EasyLoadingMaskType.none ||
+      EasyLoadingMaskType.clear => Colors.transparent,
+    };
+
+    final animationStyle = options?.animationStyle ?? config.animationStyle;
+    final EasyLoadingAnimation animation = switch (animationStyle) {
+      EasyLoadingAnimationStyle.custom => _require(
+        options?.customAnimation ?? config.customAnimation,
+        'customAnimation',
+      ),
+      EasyLoadingAnimationStyle.offset => const OffsetAnimation(),
+      EasyLoadingAnimationStyle.scale => const ScaleAnimation(),
+      EasyLoadingAnimationStyle.opacity => const OpacityAnimation(),
+    };
+
+    final shadows = options?.boxShadow ?? config.boxShadow;
+    return EasyLoadingThemeSnapshot._(
+      loadingStyle: loadingStyle,
+      customIndicatorColor: indicatorColor,
+      customProgressColor: progressColor ?? indicatorColor,
+      customBackgroundColor: backgroundColor,
+      customTextColor: textColor,
+      maskColor: maskColor,
+      animation: animation,
+      animationDuration: validateDuration(
+        options?.animationDuration ?? config.animationDuration,
+        'animationDuration',
+      ),
+      contentPadding: validateEdgeInsets(
+        options?.contentPadding ?? config.contentPadding,
+        'contentPadding',
+      ),
+      textPadding: validateEdgeInsets(
+        options?.textPadding ?? config.textPadding,
+        'textPadding',
+      ),
+      textAlign: options?.textAlign ?? config.textAlign,
+      textStyle: options?.textStyle ?? config.textStyle,
+      boxShadow: loadingStyle == EasyLoadingStyle.custom && shadows != null
+          ? List<BoxShadow>.unmodifiable(shadows)
+          : null,
+      indicatorSize: validatePositiveDouble(
+        options?.indicatorSize ?? config.indicatorSize,
+        'indicatorSize',
+      ),
+      progressWidth: validatePositiveDouble(
+        options?.progressWidth ?? config.progressWidth,
+        'progressWidth',
+      ),
+      lineWidth: validatePositiveDouble(
+        options?.lineWidth ?? config.lineWidth,
+        'lineWidth',
+      ),
+      radius: validateNonNegativeDouble(
+        options?.radius ?? config.radius,
+        'radius',
+      ),
+      fontSize: validatePositiveDouble(
+        options?.fontSize ?? config.fontSize,
+        'fontSize',
+      ),
+      indicatorType: options?.indicatorType ?? config.indicatorType,
+    );
   }
 
-  /// font size of status
-  static double get fontSize => EasyLoading.instance.fontSize;
+  EasyLoadingThemeData resolve(Brightness brightness) {
+    final effectiveStyle = loadingStyle == EasyLoadingStyle.auto
+        ? switch (brightness) {
+            Brightness.dark => EasyLoadingStyle.dark,
+            Brightness.light => EasyLoadingStyle.light,
+          }
+        : loadingStyle;
 
-  /// size of indicator
-  static double get indicatorSize => EasyLoading.instance.indicatorSize;
-
-  /// width of progress indicator
-  static double get progressWidth => EasyLoading.instance.progressWidth;
-
-  /// width of indicator
-  static double get lineWidth => EasyLoading.instance.lineWidth;
-
-  /// loading indicator type
-  static EasyLoadingIndicatorType get indicatorType =>
-      EasyLoading.instance.indicatorType;
-
-  /// toast position
-  static EasyLoadingToastPosition get toastPosition =>
-      EasyLoading.instance.toastPosition;
-
-  /// toast position
-  static AlignmentGeometry alignment(EasyLoadingToastPosition? position) =>
-      position == EasyLoadingToastPosition.bottom
-          ? AlignmentDirectional.bottomCenter
-          : (position == EasyLoadingToastPosition.top
-              ? AlignmentDirectional.topCenter
-              : AlignmentDirectional.center);
-
-  /// display duration
-  static Duration get displayDuration => EasyLoading.instance.displayDuration;
-
-  /// animation duration
-  static Duration get animationDuration =>
-      EasyLoading.instance.animationDuration;
-
-  /// contentPadding of loading
-  static EdgeInsets get contentPadding => EasyLoading.instance.contentPadding;
-
-  /// padding of status
-  static EdgeInsets get textPadding => EasyLoading.instance.textPadding;
-
-  /// textAlign of status
-  static TextAlign get textAlign => EasyLoading.instance.textAlign;
-
-  /// textStyle of status
-  static TextStyle? get textStyle => EasyLoading.instance.textStyle;
-
-  /// radius of loading
-  static double get radius => EasyLoading.instance.radius;
-
-  /// should dismiss on user tap
-  static bool? get dismissOnTap => EasyLoading.instance.dismissOnTap;
-
-  static bool ignoring(EasyLoadingMaskType? maskType) {
-    maskType ??= EasyLoading.instance.maskType;
-    return EasyLoading.instance.userInteractions ??
-        (maskType == EasyLoadingMaskType.none ? true : false);
+    return switch (effectiveStyle) {
+      EasyLoadingStyle.custom => EasyLoadingThemeData(
+        indicatorColor: customIndicatorColor ?? Colors.white,
+        progressColor:
+            customProgressColor ?? customIndicatorColor ?? Colors.white,
+        backgroundColor: customBackgroundColor ?? Colors.transparent,
+        textColor: customTextColor ?? Colors.white,
+        maskColor: maskColor,
+        animation: animation,
+        animationDuration: animationDuration,
+        contentPadding: contentPadding,
+        textPadding: textPadding,
+        textAlign: textAlign,
+        textStyle: textStyle,
+        boxShadow: boxShadow,
+        indicatorSize: indicatorSize,
+        progressWidth: progressWidth,
+        lineWidth: lineWidth,
+        radius: radius,
+        fontSize: fontSize,
+        indicatorType: indicatorType,
+      ),
+      EasyLoadingStyle.dark => _resolved(
+        foreground: Colors.white,
+        background: Colors.black.withValues(alpha: 0.9),
+      ),
+      EasyLoadingStyle.light => _resolved(
+        foreground: Colors.black,
+        background: Colors.white,
+      ),
+      EasyLoadingStyle.auto => throw StateError(
+        'EasyLoadingStyle.auto must resolve to a brightness.',
+      ),
+    };
   }
+
+  EasyLoadingThemeData _resolved({
+    required Color foreground,
+    required Color background,
+  }) {
+    return EasyLoadingThemeData(
+      indicatorColor: foreground,
+      progressColor: foreground,
+      backgroundColor: background,
+      textColor: foreground,
+      maskColor: maskColor,
+      animation: animation,
+      animationDuration: animationDuration,
+      contentPadding: contentPadding,
+      textPadding: textPadding,
+      textAlign: textAlign,
+      textStyle: textStyle,
+      boxShadow: null,
+      indicatorSize: indicatorSize,
+      progressWidth: progressWidth,
+      lineWidth: lineWidth,
+      radius: radius,
+      fontSize: fontSize,
+      indicatorType: indicatorType,
+    );
+  }
+}
+
+@immutable
+class EasyLoadingThemeData {
+  const EasyLoadingThemeData({
+    required this.indicatorColor,
+    required this.progressColor,
+    required this.backgroundColor,
+    required this.textColor,
+    required this.maskColor,
+    required this.animation,
+    required this.animationDuration,
+    required this.contentPadding,
+    required this.textPadding,
+    required this.textAlign,
+    required this.textStyle,
+    required this.boxShadow,
+    required this.indicatorSize,
+    required this.progressWidth,
+    required this.lineWidth,
+    required this.radius,
+    required this.fontSize,
+    required this.indicatorType,
+  });
+
+  final Color indicatorColor;
+  final Color progressColor;
+  final Color backgroundColor;
+  final Color textColor;
+  final Color maskColor;
+  final EasyLoadingAnimation animation;
+  final Duration animationDuration;
+  final EdgeInsets contentPadding;
+  final EdgeInsets textPadding;
+  final TextAlign textAlign;
+  final TextStyle? textStyle;
+  final List<BoxShadow>? boxShadow;
+  final double indicatorSize;
+  final double progressWidth;
+  final double lineWidth;
+  final double radius;
+  final double fontSize;
+  final EasyLoadingIndicatorType indicatorType;
+}
+
+AlignmentGeometry easyLoadingAlignment(EasyLoadingToastPosition position) {
+  return switch (position) {
+    EasyLoadingToastPosition.top => AlignmentDirectional.topCenter,
+    EasyLoadingToastPosition.center => AlignmentDirectional.center,
+    EasyLoadingToastPosition.bottom => AlignmentDirectional.bottomCenter,
+  };
+}
+
+double validatePositiveDouble(double value, String name) {
+  if (!value.isFinite || value <= 0) {
+    throw ArgumentError.value(value, name, 'must be finite and greater than 0');
+  }
+  return value;
+}
+
+double validateNonNegativeDouble(double value, String name) {
+  if (!value.isFinite || value < 0) {
+    throw ArgumentError.value(value, name, 'must be finite and non-negative');
+  }
+  return value;
+}
+
+Duration validateDuration(Duration value, String name) {
+  if (value.isNegative) {
+    throw ArgumentError.value(value, name, 'must be non-negative');
+  }
+  return value;
+}
+
+EdgeInsets validateEdgeInsets(EdgeInsets value, String name) {
+  for (final side in <double>[
+    value.left,
+    value.top,
+    value.right,
+    value.bottom,
+  ]) {
+    if (!side.isFinite || side < 0) {
+      throw ArgumentError.value(
+        value,
+        name,
+        'must contain finite, non-negative values',
+      );
+    }
+  }
+  return value;
+}
+
+BoxConstraints validateConstraints(BoxConstraints value, String name) {
+  final values = <double>[
+    value.minWidth,
+    value.maxWidth,
+    value.minHeight,
+    value.maxHeight,
+  ];
+  if (values.any((item) => item.isNaN || item < 0) ||
+      value.minWidth > value.maxWidth ||
+      value.minHeight > value.maxHeight) {
+    throw ArgumentError.value(value, name, 'contains invalid bounds');
+  }
+  return value;
+}
+
+T _require<T>(T? value, String name) {
+  if (value == null) {
+    throw StateError(
+      '$name must be set when using the selected custom EasyLoading mode.',
+    );
+  }
+  return value;
 }

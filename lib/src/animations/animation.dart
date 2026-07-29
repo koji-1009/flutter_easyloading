@@ -1,45 +1,81 @@
-// The MIT License (MIT)
-//
-// Copyright (c) 2020 nslogx
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-
 import 'package:flutter/widgets.dart';
 
+/// Defines how an EasyLoading panel responds to its animation controller.
 abstract class EasyLoadingAnimation {
-  EasyLoadingAnimation();
+  const EasyLoadingAnimation();
 
+  /// Builds the animated representation of [child].
   Widget call(
     Widget child,
     AnimationController controller,
     AlignmentGeometry alignment,
   ) {
-    return buildWidget(
-      child,
-      controller,
-      alignment,
-    );
+    return buildWidget(child, controller, alignment);
   }
 
+  /// Creates the transition for [child] at the controller's current value.
   Widget buildWidget(
     Widget child,
     AnimationController controller,
     AlignmentGeometry alignment,
   );
+}
+
+/// Fades the loading panel in and out.
+class OpacityAnimation extends EasyLoadingAnimation {
+  const OpacityAnimation();
+
+  @override
+  Widget buildWidget(
+    Widget child,
+    AnimationController controller,
+    AlignmentGeometry alignment,
+  ) {
+    return Opacity(opacity: controller.value, child: child);
+  }
+}
+
+/// Slides the loading panel from its resolved alignment while fading it.
+class OffsetAnimation extends EasyLoadingAnimation {
+  const OffsetAnimation();
+
+  @override
+  Widget buildWidget(
+    Widget child,
+    AnimationController controller,
+    AlignmentGeometry alignment,
+  ) {
+    final resolved = alignment is Alignment
+        ? alignment
+        : alignment.resolve(TextDirection.ltr);
+    final begin = Offset(
+      resolved.x.clamp(-1.0, 1.0).toDouble(),
+      resolved.y.clamp(-1.0, 1.0).toDouble(),
+    );
+    final animation = Tween<Offset>(
+      begin: begin,
+      end: Offset.zero,
+    ).animate(controller);
+    return Opacity(
+      opacity: controller.value,
+      child: SlideTransition(position: animation, child: child),
+    );
+  }
+}
+
+/// Scales the loading panel while fading it.
+class ScaleAnimation extends EasyLoadingAnimation {
+  const ScaleAnimation();
+
+  @override
+  Widget buildWidget(
+    Widget child,
+    AnimationController controller,
+    AlignmentGeometry alignment,
+  ) {
+    return Opacity(
+      opacity: controller.value,
+      child: ScaleTransition(scale: controller, child: child),
+    );
+  }
 }
