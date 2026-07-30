@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## [4.0.2] - 2026-07-30
+
+### Changed
+
+- Lowered the minimum supported versions to Dart 3.6 and Flutter 3.27 while preserving the 4.0 API and runtime behavior.
+- Added validation against the minimum supported Flutter version.
+
 ## [4.0.1] - 2026-07-30
 
 ### Fixed

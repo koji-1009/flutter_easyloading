@@ -30,8 +30,8 @@ Flutter. Display calls do not require a `BuildContext`.
 
 ## 🧰 Requirements
 
-- Dart 3.8.0 or later, below Dart 4.0.0
-- Flutter 3.32.0 or later
+- Dart 3.6.0 or later, below Dart 4.0.0
+- Flutter 3.27.0 or later
 
 Read the [4.0 migration guide](./MIGRATION.md) before upgrading from 3.x.
 
@@ -45,7 +45,7 @@ Or add the dependency manually:
 
 ```yaml
 dependencies:
-  flutter_easyloading: ^4.0.1
+  flutter_easyloading: ^4.0.2
 ```
 
 ```dart

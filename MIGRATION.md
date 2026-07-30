@@ -6,8 +6,8 @@
 
 4.0 requires:
 
-- Dart 3.8.0 or later, below Dart 4.0.0
-- Flutter 3.32.0 or later
+- Dart 3.6.0 or later, below Dart 4.0.0
+- Flutter 3.27.0 or later
 
 Update the SDK before resolving package dependencies.
 

@@ -42,7 +42,7 @@ Use the pinned SDK for all development commands. Do not update `.fvmrc` as part 
 Run the same checks used by CI before opening a pull request:
 
 ```shell
-fvm dart format --output=none --set-exit-if-changed lib test example/lib example/test
+fvm dart format --language-version=latest --output=none --set-exit-if-changed lib test example/lib example/test
 fvm flutter analyze --fatal-infos
 fvm flutter test
 cd example

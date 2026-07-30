@@ -30,8 +30,8 @@
 
 ## 🧰 环境要求
 
-- Dart 3.8.0 或更高版本，低于 Dart 4.0.0
-- Flutter 3.32.0 或更高版本
+- Dart 3.6.0 或更高版本，低于 Dart 4.0.0
+- Flutter 3.27.0 或更高版本
 
 从 3.x 升级前，请阅读 [4.0 迁移指南](./MIGRATION.md)。
 
@@ -45,7 +45,7 @@ flutter pub add flutter_easyloading
 
 ```yaml
 dependencies:
-  flutter_easyloading: ^4.0.1
+  flutter_easyloading: ^4.0.2
 ```
 
 ```dart

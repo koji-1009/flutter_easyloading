@@ -1054,11 +1054,11 @@ void main() {
     );
     final nodes = find.semantics.byLabel('File upload').evaluate();
     expect(nodes, hasLength(1));
-    expect(nodes.single.getSemanticsData().value, '0%');
-    expect(
-      nodes.single.getSemanticsData().flagsCollection.isLiveRegion,
-      isTrue,
-    );
+    final semanticsData = nodes.single.getSemanticsData();
+    expect(semanticsData.value, '0%');
+    // ignore: deprecated_member_use
+    final isLiveRegion = semanticsData.hasFlag(SemanticsFlag.isLiveRegion);
+    expect(isLiveRegion, isTrue);
 
     for (var index = 1; index < 10; index++) {
       await EasyLoading.showProgress(index / 100);

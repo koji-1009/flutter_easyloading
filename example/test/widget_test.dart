@@ -3,6 +3,15 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_easyloading_example/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+Finder _outlinedButtonWithText(String text) {
+  return find.ancestor(
+    of: find.text(text),
+    matching: find.byWidgetPredicate(
+      (Widget widget) => widget is OutlinedButton,
+    ),
+  );
+}
+
 void main() {
   tearDown(() async {
     if (EasyLoading.isShow) {
@@ -57,7 +66,7 @@ void main() {
     await tester.pumpWidget(const ExampleApp());
     EasyLoading.instance.animationDuration = Duration.zero;
 
-    await tester.tap(find.widgetWithText(OutlinedButton, 'Loading'));
+    await tester.tap(_outlinedButtonWithText('Loading'));
     await tester.pump();
     await tester.pump();
 
@@ -79,7 +88,7 @@ void main() {
     await tester.pumpWidget(const ExampleApp());
     EasyLoading.instance.animationDuration = Duration.zero;
 
-    await tester.tap(find.widgetWithText(OutlinedButton, 'Custom'));
+    await tester.tap(_outlinedButtonWithText('Custom'));
     await tester.pump();
     await tester.pump();
     expect(find.text('Custom content is ready'), findsOneWidget);
