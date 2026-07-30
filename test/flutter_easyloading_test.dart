@@ -659,6 +659,26 @@ void main() {
     expect(EasyLoading.isShow, isFalse);
   });
 
+  testWidgets('Host supplies Material to non-Material route roots', (
+    WidgetTester tester,
+  ) async {
+    final focusNode = FocusNode();
+    addTearDown(focusNode.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        builder: EasyLoading.init(),
+        home: KeyboardListener(
+          focusNode: focusNode,
+          child: InkWell(onTap: () {}, child: const Text('Non-Material route')),
+        ),
+      ),
+    );
+
+    expect(find.text('Non-Material route'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('Cupertino Host survives application rebuilds', (
     WidgetTester tester,
   ) async {

@@ -101,7 +101,11 @@ class _FlutterEasyLoadingState extends State<FlutterEasyLoading>
       fit: StackFit.passthrough,
       clipBehavior: Clip.none,
       children: <Widget>[
-        widget.child ?? const SizedBox.shrink(),
+        Material(
+          type: MaterialType.transparency,
+          textStyle: DefaultTextStyle.of(context).style,
+          child: widget.child ?? const SizedBox.shrink(),
+        ),
         if (session != null)
           Positioned.fill(
             child: _EasyLoadingOverlay(

@@ -45,7 +45,7 @@ flutter pub add flutter_easyloading
 
 ```yaml
 dependencies:
-  flutter_easyloading: ^4.0.0
+  flutter_easyloading: ^4.0.1
 ```
 
 ```dart

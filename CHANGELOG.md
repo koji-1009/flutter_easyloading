@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [4.0.1] - 2026-07-30
+
+### Fixed
+
+- Restored a transparent Material ancestor for application content so routes without their own `Scaffold` or `Material` retain the 3.x compatibility safeguard ([#247](https://github.com/nslogx/flutter_easyloading/issues/247)).
+
 ## [4.0.0] - 2026-07-28
 
 ### Added

@@ -45,7 +45,7 @@ Or add the dependency manually:
 
 ```yaml
 dependencies:
-  flutter_easyloading: ^4.0.0
+  flutter_easyloading: ^4.0.1
 ```
 
 ```dart

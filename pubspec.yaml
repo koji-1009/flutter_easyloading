@@ -1,6 +1,6 @@
 name: flutter_easyloading
 description: A lightweight, customizable loading and toast overlay for Flutter applications.
-version: 4.0.0
+version: 4.0.1
 homepage: https://github.com/nslogx/flutter_easyloading
 repository: https://github.com/nslogx/flutter_easyloading
 issue_tracker: https://github.com/nslogx/flutter_easyloading/issues
